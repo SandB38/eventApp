@@ -1,0 +1,8 @@
+@let events = events$ | async;
+
+<h1>{{ title() }}</h1>
+
+<button (click)="changeTitle()">Change title</button>
+@if (events) {
+  <app-table-events [items]="events" (toEdit)="editMyEvent($event)"/>
+}
