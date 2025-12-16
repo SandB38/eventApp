@@ -1,0 +1,10 @@
+import 'zone.js'; // Required for Angular testing
+import 'zone.js/testing'; // Zone.js testing patches
+import {TestBed} from '@angular/core/testing';
+import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from '@angular/platform-browser-dynamic/testing';
+
+// Initialize Angular's testing environment once for all tests
+TestBed.initTestEnvironment(
+  BrowserDynamicTestingModule,
+  platformBrowserDynamicTesting()
+);
