@@ -1,4 +1,4 @@
-import {Component, input, output} from '@angular/core';
+import {Component, computed, input, output} from '@angular/core';
 import {MyEvent} from '../../models/Event';
 
 @Component({
@@ -10,6 +10,7 @@ import {MyEvent} from '../../models/Event';
 export class TableEvents {
   items = input.required<MyEvent[]>();
   toEdit = output<MyEvent>();
+  sortedItems = computed(() => this.items().sort((a, b) => a.title.localeCompare(b.title)))
 
   clickToEdit(item: MyEvent): void {
     this.toEdit.emit(item);
