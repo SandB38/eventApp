@@ -1,42 +1,37 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
 import {TableEvents} from './table-events';
-import {ComponentRef, inputBinding, signal} from '@angular/core';
+import {TableEventsHost} from './table-events-host';
+import {By} from '@angular/platform-browser';
 
 describe('TableEvents', () => {
-  let component: TableEvents;
-  let componentRef: ComponentRef<TableEvents>;
-  let fixture: ComponentFixture<TableEvents>;
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TableEvents]
-    })
-      .compileComponents();
-    const items = signal([]);
-    fixture = TestBed.createComponent(TableEvents,
-      {
-        bindings: [
-          inputBinding('items', items)
-        ]
-      });
-    component = fixture.componentInstance;
-    componentRef = fixture.componentRef
-    await fixture.whenStable();
+      imports: [TableEvents, TableEventsHost]
+    }).compileComponents();
+
   });
 
-  it('should create', () => {
+  it('should create with empty items array', async () => {
+    const fixture = TestBed.createComponent(TableEventsHost);
+    fixture.detectChanges()
+    const component = fixture.componentInstance;
+    await fixture.whenStable();
     expect(component).toBeTruthy();
   });
 
   it('should display items sorted by title', () => {
-    // component.items = [{title: 'My tile', episode_id: 1}];
-    vi.spyOn(component, 'items').mockReturnValue([{title: 'My tile', episode_id: 1}, {
-      title: 'Another tile',
-      episode_id: 1
-    }])
+    const fixture = TestBed.createComponent(TableEventsHost);
+    fixture.componentInstance.items = [
+      {title: 'My tile', episode_id: 1},
+      {title: 'Another tile', episode_id: 1}];
     fixture.detectChanges()
-    console.log(component.sortedItems.length)
-    expect(component).toBeTruthy();
+
+    const tableEventsInstance = fixture.debugElement
+      .query(By.directive(TableEvents))
+      .componentInstance;
+    expect(tableEventsInstance.sortedItems()).toStrictEqual([
+      {title: 'Another tile', episode_id: 1},
+      {title: 'My tile', episode_id: 1}])
   });
 });
