@@ -4,6 +4,7 @@ import {GetAllEvents} from './get-all-events';
 import {HttpTestingController, provideHttpClientTesting} from '@angular/common/http/testing';
 import {provideHttpClient} from '@angular/common/http';
 import {expect} from 'vitest';
+import {MyEvent} from '../models/Event';
 
 describe('GetAllEvents', () => {
   let service: GetAllEvents;
@@ -28,15 +29,18 @@ describe('GetAllEvents', () => {
   });
 
   it('should fetch events', () => {
-    const mockEvents = [{episode_id: 1, title: 'Alice'}];
+    const mockData: MyEvent[] = [{episode_id: 1, title: 'Alice'}];
 
-    service.getAll().subscribe(events => {
-      expect(events).toEqual(mockEvents);
+    service.getAll().subscribe(myEvents => {
+      expect(myEvents).toEqual(mockData);
     });
 
     const req = httpMock.expectOne('https://swapi.dev/api/films');
     expect(req.request.method).toBe('GET');
 
-    req.flush(mockEvents);
+    req.flush({
+      results: mockData,
+    });
+
   });
 });

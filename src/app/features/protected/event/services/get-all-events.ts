@@ -15,7 +15,9 @@ export class GetAllEvents {
       .pipe(map((response: EventsResponse) => {
         if (response === null || response.results === null) {
           return []
-        } else return response.results;
+        } else {
+          return response.results;
+        }
       }))
   }
 }
